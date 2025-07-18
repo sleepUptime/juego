@@ -1,0 +1,233 @@
+<!-- combat.component.html -->
+<div class="combat-screen">
+    <h1>⚔️ ARENA DE COMBATE ⚔️</h1>
+    
+    <!-- PANTALLA DE JUEGO PERDIDO CON HISTORIAL -->
+    <div *ngIf="mostrarHistorial && !soloVictorias" class="historial-container">
+        <div class="game-over">
+            <h2>💀 HAS SIDO DERROTADO 💀</h2>
+            
+            <!-- Mostrar quién te derrotó -->
+            <div class="derrota-info">
+                <div class="personaje-derrotado">
+                    <img [src]="jugador.imagen" [alt]="jugador.nombre" class="imagen-derrotado">
+                    <span class="nombre-derrotado">{{jugador.nombre}}</span>
+                </div>
+                
+                <div class="vs-derrota">VS</div>
+                
+                <div class="enemigo-ganador">
+                    <img [src]="enemigo.imagen" [alt]="enemigo.nombre" class="imagen-ganador">
+                    <span class="nombre-ganador">{{enemigo.nombre}}</span>
+                    <span class="etiqueta-ganador">🏆 GANADOR</span>
+                </div>
+            </div>
+            
+            <p>Fuiste derrotado por <strong>{{enemigo.nombre}}</strong></p>
+        </div>
+
+        <div class="historial-victorias">
+            <h3>🏆 Tus victorias en esta partida:</h3>
+            
+            <div *ngIf="historialVictorias.length === 0" class="sin-victorias">
+                <p>😔 No obtuviste victorias en esta partida</p>
+            </div>
+            
+            <div *ngIf="historialVictorias.length > 0" class="lista-victorias">
+                <div 
+                    *ngFor="let victoria of historialVictorias; let i = index" 
+                    class="victoria-item">
+                    <span class="numero-victoria">{{i + 1}}</span>
+                    <img [src]="victoria.imagen" [alt]="victoria.nombre" class="enemigo-miniatura">
+                    <span class="nombre-enemigo">{{victoria.nombre}}</span>
+                </div>
+            </div>
+            
+            <div class="estadisticas">
+                <p><strong>Total:</strong> {{historialVictorias.length}} victoria{{historialVictorias.length !== 1 ? 's' : ''}}</p>
+            </div>
+        </div>
+
+        <div class="acciones-fin">
+            <button (click)="irAlHome()" class="btn-home">
+                🏠 Crear Nuevo Personaje
+            </button>
+            <button (click)="irAlHomeGeneral()" class="btn-proximamente">
+                🚀 Expansiones
+            </button>
+            <button (click)="mostrarVictoriasDesdeDerrota()" class="btn-victorias">
+                🏆 Ver Mis Victorias
+            </button>
+        </div>
+    </div>
+
+    <!-- PANTALLA SOLO VICTORIAS -->
+    <div *ngIf="mostrarHistorial && soloVictorias" class="historial-container">
+        <div class="historial-victorias">
+            <h2>🏆 HISTORIAL DE COMBATES 🏆</h2>
+            
+            <!-- ÚLTIMA BATALLA -->
+            <div *ngIf="ultimaBatalla" class="ultima-batalla">
+                <h3>�️ Última Batalla</h3>
+                <div class="batalla-info">
+                    <div class="luchador">
+                        <img [src]="ultimaBatalla.jugador.imagen" [alt]="ultimaBatalla.jugador.nombre" class="imagen-luchador">
+                        <span class="nombre-luchador">{{ultimaBatalla.jugador.nombre}}</span>
+                        <span *ngIf="ultimaBatalla.ganador === 'jugador'" class="etiqueta-ganador">🏆 GANADOR</span>
+                    </div>
+                    
+                    <div class="vs-batalla">VS</div>
+                    
+                    <div class="luchador">
+                        <img [src]="ultimaBatalla.enemigo.imagen" [alt]="ultimaBatalla.enemigo.nombre" class="imagen-luchador">
+                        <span class="nombre-luchador">{{ultimaBatalla.enemigo.nombre}}</span>
+                        <span *ngIf="ultimaBatalla.ganador === 'enemigo'" class="etiqueta-ganador">🏆 GANADOR</span>
+                        <span *ngIf="ultimaBatalla.ganador === 'en_curso'" class="etiqueta-en-curso">⚔️ EN CURSO</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- VICTORIAS -->
+            <div class="seccion-victorias">
+                <h3>🏆 Tus Victorias</h3>
+                <div *ngIf="historialVictorias.length === 0" class="sin-victorias">
+                    <p>😔 Aún no tienes victorias en esta partida</p>
+                    <p>¡Sigue luchando para conseguir tu primera victoria!</p>
+                </div>
+                
+                <div *ngIf="historialVictorias.length > 0" class="lista-victorias-scroll">
+                    <div 
+                        *ngFor="let victoria of historialVictorias.slice().reverse(); let i = index" 
+                        class="victoria-item-simple">
+                        <span class="numero-combate">{{historialVictorias.length - i}}</span>
+                        <img [src]="victoria.imagen" [alt]="victoria.nombre" class="enemigo-miniatura-simple">
+                        <span class="nombre-enemigo-simple">{{victoria.nombre}}</span>
+                        <span class="resultado">✅ {{victoria.resultado}}</span>
+                    </div>
+                </div>
+                
+                <div *ngIf="historialVictorias.length > 0" class="estadisticas">
+                    <p><strong>Total Victorias:</strong> {{historialVictorias.length}}</p>
+                </div>
+            </div>
+
+            <!-- BOTONES SIMPLIFICADOS -->
+            <div class="acciones-fin">
+                <button (click)="volverAJugar()" class="btn-volver-jugar">
+                    🎮 Volver a Jugar
+                </button>
+                <button (click)="salirAlHome()" class="btn-home-victorias">
+                    🏠 Home
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANTALLA NORMAL DE COMBATE -->
+    <div *ngIf="!mostrarHistorial" 
+         class="combate-normal"
+         [style.background-image]="'url(' + escenarioFondo + ')'"
+         [style.background-size]="'cover'"
+         [style.background-position]="'center'"
+         [style.background-repeat]="'no-repeat'">
+        <div class="combatants">
+            <!-- JUGADOR -->
+            <div class="personaje" 
+                 [ngClass]="{
+                   'turno-jugador': turnoActual === 'jugador'
+                 }">
+                <h2>{{jugador.nombre}}</h2>
+                <img src="{{jugador.imagen}}" alt="Tu personaje" />
+                
+                <!-- Barra de vida del jugador -->
+                <div class="vida-container">
+                    <div class="vida-label">❤️ Vida</div>
+                    <div class="vida-barra">
+                        <div class="vida-fill jugador" [style.width.%]="getVidaPorcentajeJugador()"></div>
+                    </div>
+                    <div class="vida-numeros">{{jugador.vida}} / {{vidaMaximaJugador}}</div>
+                </div>
+                
+                <div class="stats">
+                    <p>⚡ Fuerza: {{jugador.fuerza}}</p>
+                    <p>🛡️ Armadura: {{jugador.armadura}}</p>
+                </div>
+            </div>
+
+            <!-- VS -->
+            <div class="vs-section">
+                <div class="vs">VS</div>
+                <div class="mensaje-combate" 
+                     [ngClass]="{'mensaje-victoria': esVictoria}"
+                     *ngIf="mensajeCombate" 
+                     [innerHTML]="formatearMensajeHTML(mensajeCombate)">
+                </div>
+            </div>
+
+            <!-- ENEMIGO -->
+            <div class="monster" 
+                 [ngClass]="{
+                   'turno-enemigo': turnoActual === 'enemigo'
+                 }">
+                <h2>{{enemigo.nombre}}</h2>
+                <img src="{{enemigo.imagen}}" />
+                
+                <!-- Barra de vida del enemigo -->
+                <div class="vida-container">
+                    <div class="vida-label">💀 Vida</div>
+                    <div class="vida-barra">
+                        <div class="vida-fill enemigo" [style.width.%]="getVidaPorcentajeEnemigo()"></div>
+                    </div>
+                    <div class="vida-numeros">{{enemigo.vida}} / {{vidaMaximaEnemigo}}</div>
+                </div>
+                
+                <div class="stats">
+                    <p>⚡ Fuerza: {{enemigo.fuerza}}</p>
+                    <p>🛡️ Armadura: {{enemigo.armadura}}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTONES DE ACCIÓN -->
+        <div class="actions">
+            <button 
+                *ngIf="!combateTerminado" 
+                (click)="combatir()" 
+                class="btn-luchar">
+                ⚔️ Luchar
+            </button>
+            
+            <button 
+                *ngIf="combateTerminado && jugadorGano" 
+                (click)="siguienteBatalla()" 
+                class="btn-siguiente">
+                🏆 Siguiente Batalla
+            </button>
+            
+            <button 
+                *ngIf="!combateTerminado"
+                (click)="huir()" 
+                class="btn-huir">
+                🏃 Huir
+            </button>
+
+            <button 
+                (click)="irACrearPersonaje()" 
+                class="btn-crear-nuevo">
+                👤 Crear Personaje
+            </button>
+
+            <button 
+                (click)="mostrarVictorias()" 
+                class="btn-victorias">
+                🏆 Victorias
+            </button>
+
+            <button 
+                (click)="salirAlHome()" 
+                class="btn-salir">
+                🏠 Salir
+            </button>
+        </div>
+    </div>
+</div>

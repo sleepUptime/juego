@@ -1,0 +1,126 @@
+    <!-- [formGroup]="checkoutForm" (ngSubmit)="onSubmit(checkoutForm.value)" -->
+    <!-- <img src="{{personaje.imagen}}" alt=""> -->
+<!-- <div>
+  <form>
+
+    <div>
+      <label for="nombre">
+        nombre
+      </label>
+      <input id="nombre" type="text" [(ngModel)]="personaje.nombre" name="nombre">
+    </div>
+
+    <div>
+      <label for="Clase">
+        Clase
+      </label>
+      <select>
+        @for (personaje of arrayPersonajes ; track $index){
+        <option value="{{personaje.clase}}">{{personaje.clase}}</option>
+        }
+      </select>
+    </div>
+    <div>
+      <label for="vida">
+        Vida
+      </label>
+      <input id="vida" type="number" [(ngModel)]="personaje.vida" min="0" name="vida">
+    </div>
+    <div>
+      <label for="armadura">
+        Armadura
+      </label>
+      <input id="armadura" type="number" [(ngModel)]="personaje.armadura" min="0" name="armadura">
+    </div>
+    <div>
+      <label for="fuerza">
+        Fuerza
+      </label>
+      <input id="fuerza" type="number" [(ngModel)]="personaje.fuerza" min="0" name="fuerza">
+    </div>
+
+    <button class="button" type="submit" (click)="crearPersona()">Jugar</button>
+
+  </form>
+</div> -->
+
+
+
+
+
+<div class="character-creation">
+  <h1>🗡️ Forja tu Héroe</h1>
+
+  <div class="character-preview">
+    <div class="class-image">
+      <img [src]="selectedClassImage" alt="Clase seleccionada" />
+    </div>
+    
+    <!-- Mostrar estadísticas de la clase -->
+    <div class="class-stats" *ngIf="getEstadisticasClase()">
+      <h3>{{getEstadisticasClase()?.clase}}</h3>
+      <div class="stats-grid">
+        <div class="stat">
+          <span class="icon">❤️</span>
+          <span class="value">{{getEstadisticasClase()?.vida}}</span>
+          <span class="label">Vida</span>
+        </div>
+        <div class="stat">
+          <span class="icon">⚡</span>
+          <span class="value">{{getEstadisticasClase()?.fuerza}}</span>
+          <span class="label">Fuerza</span>
+        </div>
+        <div class="stat">
+          <span class="icon">🛡️</span>
+          <span class="value">{{getEstadisticasClase()?.armadura}}</span>
+          <span class="label">Armadura</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <form class="hero-form">
+    <div class="form-group">
+      <label for="nombre">⭐ Nombre del Héroe</label>
+      <input 
+        type="text" 
+        id="nombre" 
+        name="nombre" 
+        [(ngModel)]="personaje.nombre" 
+        placeholder="Escribe tu nombre épico..." 
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="clase">🎭 Clase</label>
+      <select 
+        id="clase" 
+        name="clase" 
+        [(ngModel)]="personaje.clase" 
+        (change)="onClaseChange(personaje.clase)"
+      >
+        @for (personaje of arrayPersonajes ; track $index){
+          <option value="{{personaje.clase}}">{{personaje.clase}}</option>
+        }
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button 
+        type="button" 
+        (click)="escogerClaseAlAzar()" 
+        class="btn-random"
+      >
+        🎲 Clase al Azar
+      </button>
+      
+      <button 
+        type="button" 
+        (click)="crearPersonaje()" 
+        class="btn-create"
+      >
+        ⚔️ ¡A la Batalla!
+      </button>
+    </div>
+  </form>
+</div>

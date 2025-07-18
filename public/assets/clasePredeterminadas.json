@@ -1,0 +1,44 @@
+  [
+  {
+    "clase": "Barbarian",
+    "fuerza": 20,
+    "vida": 1000,
+    "armadura": 20,
+    "probabilidadHuida": 20,
+    "imagen" :"./assets/barbarian.png"
+  },
+  {
+    "clase": "Wizard",
+    "fuerza": 15,
+    "vida": 600,
+    "armadura": 10,
+    "probabilidadHuida": 40,
+    "imagen" :"./assets/wizard.png"
+
+  },
+  {
+    "clase": "Ranger",
+    "fuerza": 10,
+    "vida": 500,
+    "armadura": 10,
+    "probabilidadHuida": 60,
+    "imagen" :"./assets/ranger.png"
+
+  },
+  {
+    "clase": "Rogue",
+    "fuerza": 10,
+    "vida": 400,
+    "armadura": 10,
+    "probabilidadHuida": 100,
+    "imagen" :"./assets/rogue.png"
+  },
+  {
+    "clase": "Paladin",
+    "fuerza": 20,
+    "vida": 600,
+    "armadura": 10,
+    "probabilidadHuida": 20,
+    "imagen" :"./assets/paladin.png"
+  }
+]

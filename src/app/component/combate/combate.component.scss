@@ -1,0 +1,802 @@
+.combat-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: white;
+  font-family: 'Arial', sans-serif;
+
+  h1 {
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    margin-bottom: 2rem;
+    animation: pulse 2s infinite;
+  }
+}
+
+// Estilos específicos para la pantalla de combate con escenario de fondo
+.combate-normal {
+  position: relative;
+  width: 100%;
+  padding: 2rem;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  // Overlay semitransparente para mantener legibilidad
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.1);
+    z-index: 1;
+  }
+  
+  // Asegurar que el contenido esté por encima del overlay
+  > * {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+.combatants {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 2rem auto;
+  gap: 2rem;
+}
+
+.personaje, .monster {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  transition: all 0.4s ease;
+  flex: 1;
+  max-width: 300px;
+  position: relative;
+
+  /* Efecto de brillo simple cuando es el turno del jugador */
+  &.turno-jugador {
+    border: 3px solid #00ff88;
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.8);
+  }
+
+  /* Efecto de brillo simple cuando es el turno del enemigo */
+  &.turno-enemigo {
+    border: 3px solid #ff4444;
+    box-shadow: 0 0 15px rgba(255, 68, 68, 0.8);
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  h2 {
+    color: #FFD700;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  }
+
+  img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 3px solid #FFD700;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    transition: transform 0.3s ease;
+    
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  .stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    
+    p {
+      margin: 0.2rem 0;
+      font-size: 0.9rem;
+      background: rgba(0,0,0,0.3);
+      padding: 0.3rem 0.8rem;
+      border-radius: 15px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+  }
+}
+
+.vida-container {
+  margin: 1rem 0;
+  
+  .vida-label {
+    font-size: 1rem;
+    margin-bottom: 0.6rem;
+    color: #FFD700;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  }
+  
+  .vida-barra {
+    background: rgba(0,0,0,0.4);
+    height: 25px;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 2px solid rgba(255,255,255,0.3);
+    margin-bottom: 0.6rem;
+    position: relative;
+    box-shadow: 
+      inset 0 2px 4px rgba(0,0,0,0.3),
+      0 2px 8px rgba(0,0,0,0.2);
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+      animation: shimmer 2s infinite;
+    }
+    
+    .vida-fill {
+      height: 100%;
+      transition: width 0.5s ease;
+      position: relative;
+      
+      &.jugador {
+        background: linear-gradient(90deg, #4CAF50, #66BB6A, #4CAF50);
+        box-shadow: 
+          0 0 12px rgba(76, 175, 80, 0.6),
+          inset 0 2px 4px rgba(255,255,255,0.2);
+      }
+      
+      &.enemigo {
+        background: linear-gradient(90deg, #F44336, #FF5722, #F44336);
+        box-shadow: 
+          0 0 12px rgba(244, 67, 54, 0.6),
+          inset 0 2px 4px rgba(255,255,255,0.2);
+      }
+    }
+  }
+  
+  .vida-numeros {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    text-align: center;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.vs-section {
+  text-align: center;
+  margin: 0 1rem;
+  
+  .vs {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #FFD700;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    margin-bottom: 1rem;
+    animation: pulse 2s infinite;
+  }
+  
+  .turno-indicator {
+    background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    animation: fadeIn 0.5s ease;
+  }
+  
+  .mensaje-combate {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 1.1rem;
+    font-weight: bold;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    animation: messageSlide 0.5s ease;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    text-align: center;
+    line-height: 1.5;
+    word-wrap: break-word;
+    max-width: 100%;
+    
+    // Estilos para nombres divididos en líneas
+    br {
+      margin: 0.2rem 0;
+    }
+
+    // Estilos especiales para mensajes de victoria
+    &.mensaje-victoria {
+      background: linear-gradient(135deg, 
+        rgba(255, 215, 0, 0.9), 
+        rgba(255, 140, 0, 0.8), 
+        rgba(255, 215, 0, 0.9)
+      );
+      border: 2px solid #ffd700;
+      color: #1a1a1a;
+      text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.7);
+      font-weight: 900;
+      box-shadow: 
+        0 8px 25px rgba(255, 215, 0, 0.6),
+        0 0 30px rgba(255, 215, 0, 0.4),
+        inset 0 2px 10px rgba(255, 255, 255, 0.3);
+      animation: victoryGlow 2s ease-in-out infinite alternate;
+      position: relative;
+      overflow: hidden;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+          45deg,
+          transparent 30%,
+          rgba(255, 255, 255, 0.5) 50%,
+          transparent 70%
+        );
+        animation: victoryShine 3s ease-in-out infinite;
+        pointer-events: none;
+      }
+
+      &::after {
+        content: '✨';
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        font-size: 1.5rem;
+        animation: sparkle 1.5s ease-in-out infinite;
+      }
+    }
+  }
+}
+
+@keyframes messageSlide {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px) scale(0.9); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0) scale(1); 
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+// Animaciones para mensajes de victoria
+@keyframes victoryGlow {
+  0% { 
+    box-shadow: 
+      0 8px 25px rgba(255, 215, 0, 0.6),
+      0 0 30px rgba(255, 215, 0, 0.4),
+      inset 0 2px 10px rgba(255, 255, 255, 0.3);
+  }
+  100% { 
+    box-shadow: 
+      0 12px 35px rgba(255, 215, 0, 0.8),
+      0 0 50px rgba(255, 215, 0, 0.6),
+      inset 0 2px 15px rgba(255, 255, 255, 0.5);
+  }
+}
+
+@keyframes victoryShine {
+  0% { transform: translateX(-200%) translateY(-200%) rotate(45deg); }
+  50% { transform: translateX(200%) translateY(200%) rotate(45deg); }
+  100% { transform: translateX(-200%) translateY(-200%) rotate(45deg); }
+}
+
+@keyframes sparkle {
+  0%, 100% { 
+    opacity: 1; 
+    transform: scale(1) rotate(0deg); 
+  }
+  50% { 
+    opacity: 0.7; 
+    transform: scale(1.2) rotate(180deg); 
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  
+  button {
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+  
+  .btn-luchar {
+    background: linear-gradient(45deg, #4CAF50, #66BB6A);
+    color: white;
+    
+    &:hover {
+      background: linear-gradient(45deg, #43A047, #4CAF50);
+    }
+  }
+  
+  .btn-siguiente {
+    background: linear-gradient(45deg, #FF9800, #FFC107);
+    color: white;
+    
+    &:hover {
+      background: linear-gradient(45deg, #F57C00, #FF9800);
+    }
+  }
+  
+  .btn-huir {
+    background: linear-gradient(45deg, #F44336, #FF5722);
+    color: white;
+    
+    &:hover {
+      background: linear-gradient(45deg, #D32F2F, #F44336);
+    }
+  }
+
+  .btn-crear-nuevo {
+    background: linear-gradient(45deg, #9C27B0, #E91E63);
+    color: white;
+    
+    &:hover {
+      background: linear-gradient(45deg, #7B1FA2, #C2185B);
+    }
+  }
+
+  .btn-salir {
+    background: linear-gradient(45deg, #607D8B, #78909C);
+    color: white;
+    
+    &:hover {
+      background: linear-gradient(45deg, #455A64, #607D8B);
+    }
+  }
+
+  .btn-victorias {
+    background: linear-gradient(45deg, #673AB7, #9C27B0);
+    color: white;
+    
+    &:hover {
+      background: linear-gradient(45deg, #512DA8, #7B1FA2);
+    }
+  }
+}
+
+// Estilos para la pantalla de victorias
+.historial-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  padding: 20px;
+}
+
+.historial-victorias {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    color: #ffd700;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 1.8rem;
+  }
+
+  h3 {
+    color: #ffd700;
+    margin: 1.5rem 0 1rem 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    font-size: 1.3rem;
+  }
+}
+
+// Estilos para la última batalla
+.ultima-batalla {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+
+  .batalla-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .luchador {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+  }
+
+  .imagen-luchador {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    object-fit: cover;
+  }
+
+  .nombre-luchador {
+    color: white;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  }
+
+  .etiqueta-ganador {
+    background: linear-gradient(45deg, #ffd700, #ffed4e);
+    color: #1a1a1a;
+    padding: 0.2rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-shadow: none;
+  }
+
+  .etiqueta-en-curso {
+    background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+    color: white;
+    padding: 0.2rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-shadow: none;
+  }
+
+  .vs-batalla {
+    color: #ffd700;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  }
+}
+
+// Estilos para la sección de victorias
+.seccion-victorias {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.lista-victorias-scroll {
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 10px;
+
+  /* Estilo del scrollbar */
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+}
+
+.victoria-item-simple {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+  }
+
+  .numero-combate {
+    background: linear-gradient(45deg, #4facfe, #00f2fe);
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 0.8rem;
+    min-width: 25px;
+    text-align: center;
+  }
+
+  .enemigo-miniatura-simple {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    object-fit: cover;
+  }
+
+  .nombre-enemigo-simple {
+    color: white;
+    font-weight: 500;
+    flex: 1;
+    text-align: left;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  }
+
+  .resultado {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: bold;
+  }
+}@media (max-width: 768px) {
+  .combat-screen {
+    padding: 1rem;
+  }
+  
+  .combatants {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .personaje, .monster {
+    max-width: 100%;
+    
+    img {
+      width: 120px;
+      height: 120px;
+    }
+    
+    .stats {
+      flex-direction: column;
+      gap: 0.5rem;
+      
+      p {
+        text-align: center;
+      }
+    }
+  }
+  
+  .vs-section {
+    margin: 1rem 0;
+    
+    .vs {
+      font-size: 1.5rem;
+    }
+    
+    .mensaje-combate {
+      font-size: 1rem;
+      padding: 0.8rem;
+    }
+  }
+  
+  .actions {
+    flex-direction: column;
+    width: 100%;
+    
+    button {
+      width: 100%;
+    }
+  }
+  
+  .historial-victorias {
+    margin: 1rem;
+    padding: 1rem;
+    
+    h2 {
+      font-size: 1.5rem;
+    }
+    
+    .victorias-grid {
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 0.5rem;
+      
+      .victoria-item {
+        img {
+          width: 60px;
+          height: 60px;
+        }
+        
+        p {
+          font-size: 0.7rem;
+        }
+      }
+    }
+    
+    .acciones-fin {
+      flex-direction: column;
+      
+      button {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+      }
+    }
+  }
+}
+
+// Estilos adicionales para los nuevos elementos
+.sin-victorias {
+  text-align: center;
+  padding: 2rem;
+  color: #cccccc;
+  
+  p {
+    margin: 0.5rem 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  }
+}
+
+.estadisticas {
+  text-align: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  
+  p {
+    color: #ffd700;
+    font-size: 1rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    margin: 0;
+  }
+}
+
+// Estilos para los botones de acciones finales en historiales
+.acciones-fin {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+
+  button {
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 15px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    position: relative;
+    overflow: hidden;
+    min-width: 180px;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s;
+    }
+    
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+      
+      &::before {
+        left: 100%;
+      }
+    }
+    
+    &:active {
+      transform: translateY(-1px);
+    }
+  }
+
+  .btn-volver-jugar {
+    background: linear-gradient(135deg, #4CAF50, #8BC34A, #CDDC39);
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    
+    &:hover {
+      background: linear-gradient(135deg, #43A047, #7CB342, #C0CA33);
+    }
+  }
+
+  .btn-home-victorias {
+    background: linear-gradient(135deg, #2196F3, #03A9F4, #00BCD4);
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    
+    &:hover {
+      background: linear-gradient(135deg, #1976D2, #0288D1, #0097A7);
+    }
+  }
+}
