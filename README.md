@@ -78,7 +78,9 @@ src/
 └── assets/                        # Imágenes y recursos
 ```
 
+## Despliegue con firebase
 
+https://juego-rol-5011d.web.app/
 
 
 ## 👨‍💻 Autor
