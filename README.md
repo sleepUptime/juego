@@ -45,20 +45,13 @@ Un juego de rol interactivo desarrollado en Angular donde puedes crear personaje
 
 3. **Ejecuta el servidor de desarrollo**
    ```bash
-   npm start
+   ng serve
    ```
 
 4. **Abre tu navegador**
    Navega a `http://localhost:4200/`
 
-## 📝 Scripts Disponibles
 
-| Comando | Descripción |
-|---------|-------------|
-| `npm start` | Inicia el servidor de desarrollo |
-| `npm run build` | Construye la aplicación para producción |
-| `npm test` | Ejecuta las pruebas unitarias |
-| `npm run watch` | Construye en modo observación |
 
 ## 🎯 Cómo Jugar
 
@@ -94,36 +87,12 @@ ng build --prod
 firebase deploy
 ```
 
-## 🤝 Contribución
-
-¡Las contribuciones son bienvenidas! Para contribuir:
-
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add: amazing feature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
-
-## 🐛 Reportar Bugs
-
-Si encuentras algún error, por favor abre un [issue](https://github.com/sleepUptime/juego/issues) describiendo:
-- Pasos para reproducir el error
-- Comportamiento esperado vs actual
-- Screenshots si es posible
-
-## 📜 Licencia
-
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
 
 ## 👨‍💻 Autor
 
 **sleepUptime** - [GitHub Profile](https://github.com/sleepUptime)
 
-## 🙏 Agradecimientos
 
-- Angular Team por el excelente framework
-- D&D API por proporcionar datos de referencia
-- Comunidad de desarrolladores por su apoyo
 
 ---
 
