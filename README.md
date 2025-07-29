@@ -27,7 +27,7 @@ Un juego de rol interactivo desarrollado en Angular donde puedes crear personaje
 
 ### Prerrequisitos
 - Node.js (versión 18 o superior)
-- npm o yarn
+- npm
 - Angular CLI
 
 ### Pasos de instalación
@@ -78,14 +78,7 @@ src/
 └── assets/                        # Imágenes y recursos
 ```
 
-## 🚀 Despliegue
 
-La aplicación está configurada para desplegarse automáticamente en Firebase Hosting:
-
-```bash
-ng build --prod
-firebase deploy
-```
 
 
 ## 👨‍💻 Autor
