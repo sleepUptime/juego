@@ -1,59 +1,130 @@
-# ForjandoHeroe
+# 🗡️ Forjando Héroe
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.3.
+Un juego de rol interactivo desarrollado en Angular donde puedes crear personajes de diferentes clases y enfrentarlos en épicos combates.
 
-## Development server
+## 🎮 Características
 
-To start a local development server, run:
+- **Creación de Personajes**: Crea héroes únicos con diferentes clases disponibles
+- **Sistema de Combate**: Combates por turnos con mecánicas de ataque y defensa
+- **Múltiples Clases**: Elige entre diferentes clases de personajes:
+  - 🪓 **Barbarian**: Alta fuerza y resistencia
+  - 🧙‍♂️ **Wizard**: Magia poderosa pero frágil
+  - 🏹 **Ranger**: Equilibrado y ágil
+  - 🗡️ **Rogue**: Rápido y sigiloso
+  - 🛡️ **Paladin**: Defensor sagrado
+- **Historial de Batallas**: Registro de todas tus victorias
+- **Interfaz Responsiva**: Diseño adaptativo para diferentes dispositivos
 
-```bash
-ng serve
+## 🛠️ Tecnologías Utilizadas
+
+- **Angular 19.2**: Framework principal
+- **TypeScript**: Lenguaje de programación
+- **SCSS**: Preprocesador CSS
+- **Firebase Hosting**: Despliegue y hosting
+- **D&D API**: Integración con API de Dungeons & Dragons
+
+## 🚀 Instalación y Configuración
+
+### Prerrequisitos
+- Node.js (versión 18 o superior)
+- npm o yarn
+- Angular CLI
+
+### Pasos de instalación
+
+1. **Clona el repositorio**
+   ```bash
+   git clone https://github.com/sleepUptime/juego.git
+   cd juego
+   ```
+
+2. **Instala las dependencias**
+   ```bash
+   npm install
+   ```
+
+3. **Ejecuta el servidor de desarrollo**
+   ```bash
+   npm start
+   ```
+
+4. **Abre tu navegador**
+   Navega a `http://localhost:4200/`
+
+## 📝 Scripts Disponibles
+
+| Comando | Descripción |
+|---------|-------------|
+| `npm start` | Inicia el servidor de desarrollo |
+| `npm run build` | Construye la aplicación para producción |
+| `npm test` | Ejecuta las pruebas unitarias |
+| `npm run watch` | Construye en modo observación |
+
+## 🎯 Cómo Jugar
+
+1. **Crear Personaje**: Selecciona una clase y personaliza tu héroe
+2. **Iniciar Combate**: Enfréntate contra enemigos generados aleatoriamente
+3. **Combate por Turnos**: Usa estrategia para atacar, defenderte o huir
+4. **Ganar Experiencia**: Acumula victorias en tu historial de batallas
+
+## 🏗️ Estructura del Proyecto
+
+```
+src/
+├── app/
+│   ├── component/
+│   │   ├── creacion-personaje/    # Creación de personajes
+│   │   ├── combate/               # Sistema de combate
+│   │   ├── home/                  # Página principal
+│   │   └── expansion/             # Futuras expansiones
+│   ├── model/
+│   │   └── personaje.ts           # Modelo de personaje
+│   └── service/
+│       ├── forjando-heroe.service.ts      # Lógica del juego
+│       └── dungeons-and-dragons-api.service.ts  # API externa
+└── assets/                        # Imágenes y recursos
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🚀 Despliegue
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+La aplicación está configurada para desplegarse automáticamente en Firebase Hosting:
 
 ```bash
-ng generate component component-name
+ng build --prod
+firebase deploy
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 🤝 Contribución
 
-```bash
-ng generate --help
-```
+¡Las contribuciones son bienvenidas! Para contribuir:
 
-## Building
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add: amazing feature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
 
-To build the project run:
+## 🐛 Reportar Bugs
 
-```bash
-ng build
-```
+Si encuentras algún error, por favor abre un [issue](https://github.com/sleepUptime/juego/issues) describiendo:
+- Pasos para reproducir el error
+- Comportamiento esperado vs actual
+- Screenshots si es posible
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 📜 Licencia
 
-## Running unit tests
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## 👨‍💻 Autor
 
-```bash
-ng test
-```
+**sleepUptime** - [GitHub Profile](https://github.com/sleepUptime)
 
-## Running end-to-end tests
+## 🙏 Agradecimientos
 
-For end-to-end (e2e) testing, run:
+- Angular Team por el excelente framework
+- D&D API por proporcionar datos de referencia
+- Comunidad de desarrolladores por su apoyo
 
-```bash
-ng e2e
-```
+---
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+⭐ ¡Si te gusta este proyecto, no olvides darle una estrella en GitHub!
